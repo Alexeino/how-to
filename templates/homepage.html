@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!--Body of Hero Section-->
+<div class="container mx-auto p-5 mb-20 text-center">
+    {% include 'includes/searchbar.html' %}
+
+    <!-- Login Modal Start-->
+    {% include 'includes/login_modal.html' %}
+    <!-- Login Modal End-->
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+      {% for note in notes %}
+        <!--Card 1-->
+        <a href="{% url 'note_details' note.slug %}">
+        <div class="max-w-sm rounded bg-[#fff] text-left overflow-hidden shadow-lg hover:shadow-2xl  hover:scale-105 transition duration-200 ease-in-out">
+            <div class="px-6 py-4">
+              <div class="font-bold text-xl mb-2">{{note.title}} </div>
+              <p class="text-gray-700 text-base"> <!--Slice upto 120 Character-->
+                  {{note.description |slice:":120"}}
+              </p>
+            </div>
+            <div class="px-6 pt-4 pb-2">
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#React</span>
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#Django</span>
+              <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#Demo</span>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+  
+    </div>
+</div>
+{% endblock content %}

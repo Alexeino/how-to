@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mx-auto ">
+        <form action="" method="post">
+{% csrf_token %}
+        <div class=" w-full md:w-3/4 mx-auto p-4 m-5 mb-15 bg-gray-100">
+            <div class="px-4 w-full">
+            <label for="" class="block font-mono font-semibold text-lg">Note Title</label>
+            <input type="text" class=" p-2 w-full md:w-3/4 border-2 hover:text-[#38BDF8] " placeholder="Enter Title" name="title" required>
+            </div>
+            <div class="px-4 w-full">
+            <label for="" class="block font-mono font-semibold text-lg">Enter Description</label>
+            <textarea type="text" class=" p-2 w-full md:w-3/4 border-2 hover:text-[#38BDF8] " placeholder="Enter Description" name="description" required></textarea>
+            </div>
+            <div class="px-4 w-full">
+            <label for="" class="block font-mono font-semibold text-lg">Github Link</label>
+            <input type="text" class=" p-2 w-full md:w-3/4 border-2 hover:text-[#38BDF8] " placeholder="Enter Title" name="github_link" required>
+            </div>
+            <div class="px-4 w-full">
+            <label for="" class="block font-mono font-semibold text-lg" name="images">Add Screenshots</label>
+            <input type="file" class=" p-2 w-full md:w-3/4 border-2 hover:text-[#38BDF8] ">
+            </div>
+
+            <div class="flex px-4 w-full mt-2 space-x-2">
+                <input type="text" name="steps" class=" p-2 w-3/4 border-2 hover:text-[#38BDF8] text-md" placeholder="Write Step " required>
+                <button type="submit" id="add_skill_btn" onclick="addInputforSteps()" class="px-4 text-white bg-gray-600 border-l rounded-sm hover:bg-sky-500">+</button>
+            </div>
+            <div id="step_row" class="">
+
+            </div>
+            <p class="text-sm hover:underline mx-4 mt-2 text-sky-700 font-semibold">Your Node will be sent to the Admin for Approval before it can be shown over board.</p>
+            <button type="submit" id="add_skill_btn" onclick="removeInputBox(${current_step})" class="py-2 rounded-lg mx-4 mt-4 w-1/4  text-white bg-gray-600 border-l rounded-sm hover:bg-sky-500">Submit</button>
+
+        </div>
+</form>
+    </div>
+
+<script>
+    var current_step = 0
+    function addInputforSteps(){
+    var step_row = document.getElementById("step_row");
+    var html = `
+        <div class="flex px-4 w-full mt-2 space-x-2" id="current_step-${current_step}" >
+            <input type="text" name="steps" class=" p-2 w-3/4 border-2 hover:text-[#38BDF8] text-md" placeholder="Write Step" required>
+            <button type="button" id="add_skill_btn" onclick="removeInputBox(${current_step})" class="px-4 text-white bg-gray-600 border-l rounded-sm hover:bg-sky-500">Remove</button>
+        </div>
+    `
+    step_row.innerHTML += html
+    current_step += 1
+}
+
+function removeInputBox(id){
+    var element = document.getElementById(`current_step-${id}`);
+    element.remove();
+    current_step -= 1
+}
+</script>
+{% endblock content %}

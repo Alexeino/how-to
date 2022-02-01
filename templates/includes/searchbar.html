@@ -1,0 +1,73 @@
+{% load static %}
+<form action="" method="POST" class="pb-4 relative">
+    {% csrf_token %}
+<div class="justify-between ">
+    <div class="flex">
+        <input type="text" id="search-input" class="px-4 py-2 w-80 border-2 hover:text-[#38BDF8] rounded-l-lg " placeholder="Search...">
+        <button type="submit" class="px-4 text-white bg-gray-600 border-l rounded-r-lg hover:bg-sky-500">
+            Search
+        </button>
+
+    </div>
+</div>
+<div id="result-box" class="absolute p-4 z-50 mt-2 border-2 border-gray-500 rounded-md bg-white w-1/3 hidden">
+     <div id="loader" class="hidden">
+         #
+     </div>
+</div>
+
+</form>
+
+<script>
+
+const searchInput = document.getElementById('search-input')
+const resultBox = document.getElementById('result-box')
+const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
+const loader = document.getElementById('loader')
+const sendSearchString = (note) =>{
+    resultBox.innerHTML = ""
+    $.ajax({
+        type : 'POST',
+        url : 'search_view/',
+        /*beforeSend : ()=>{
+            loader.classList.remove('hidden')
+        },*/
+        data : {
+            'csrfmiddlewaretoken':csrftoken,
+            'note':note
+        },
+        success: (res)=>{
+            console.log(res)
+            const data = res.data
+            if (Array.isArray(data)){
+                data.forEach(note =>{
+                    resultBox.innerHTML += `
+                <div class="items-left inline-flex border-3 w-full cursor-pointer border-black hover:scale-105 hover:bg-gray-50">
+                    <a href="note_details/${note.slug}" class="text-lg font-semibold py-1">${note.title}</a>
+                </div>
+                    `
+                })
+            }else{
+                if (searchInput.value.length > 0){
+                    resultBox.innerHTML = `<b>${data}</b>`
+                }else{
+                    resultBox.classList.add("hidden")
+                }
+            }
+        },
+      /*  complete: ()=>{
+            loader.classList.add('hidden')
+        }*/
+        error: (error)=>{
+            console.log(error)
+        }
+    })
+}
+
+searchInput.addEventListener('keyup', e=>{
+    //console.log(e.target.value)
+    resultBox.classList.remove('hidden')
+
+    sendSearchString(e.target.value)
+})
+</script>
